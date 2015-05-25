@@ -70,6 +70,4 @@ searchYanks criteria = do
           ["content" := RegEx (Regex (searchString criteria) "i")]
           "yanks") >>= nextN (amount criteria)
   close pipe
-  print criteria
-  print results
   return $ mapMaybe mkYank results
