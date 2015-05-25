@@ -7,10 +7,12 @@ import           Control.Monad.Trans
 import           Data.Aeson          hiding (json)
 import           Data.List           (find)
 import           Web.Scotty
+import Network.Wai.Middleware.RequestLogger
 
 main :: IO ()
 main =
   scotty 3000 $ do
+    middleware logStdoutDev
     get "/" $
       json $ object ["yank_url" .= String "/yanks"]
     get "/yanks" $ do
