@@ -61,3 +61,15 @@ findYankById yankId = do
     findOne (select ["_id" := ObjId (read yankId)] "yanks")
   close pipe
   return $ mkYank =<< result
+
+searchYanks :: SearchFilter -> IO [Yank]
+searchYanks criteria = do
+  pipe <- connect (host "127.0.0.1")
+  results <- access pipe master "yanks" $
+    find (select
+          ["content" := RegEx (Regex (searchString criteria) "i")]
+          "yanks") >>= nextN (amount criteria)
+  close pipe
+  print criteria
+  print results
+  return $ mapMaybe mkYank results

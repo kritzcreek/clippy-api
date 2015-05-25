@@ -2,12 +2,12 @@
 
 module Main where
 
-import           Clippy              (findAllYanks, findYankById, insertNewYank)
+import           Clippy              (findAllYanks, findYankById, insertNewYank, searchYanks)
 import           Control.Monad.Trans
 import           Data.Aeson          hiding (json)
 import           Data.List           (find)
 import           Web.Scotty
-import Network.Wai.Middleware.RequestLogger
+import           Network.Wai.Middleware.RequestLogger
 
 main :: IO ()
 main =
@@ -22,3 +22,5 @@ main =
       json =<< liftIO . findYankById =<< param "yankId"
     post "/yanks" $
       json =<< liftIO . insertNewYank =<< jsonData
+    post "/yanks/search" $
+      json =<< liftIO . searchYanks =<< jsonData
