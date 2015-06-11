@@ -27,6 +27,7 @@ library
                      , time
                      , cryptohash
                      , mongoDB
+                     , bloodhound
   hs-source-dirs:      clippy-lib
   default-language:    Haskell2010
 
@@ -36,6 +37,7 @@ executable clippy-Server
                      , bytestring
                      , clippy-api
                      , mongoDB
+                     , bloodhound
                      , mtl
                      , scotty
                      , wai-extra

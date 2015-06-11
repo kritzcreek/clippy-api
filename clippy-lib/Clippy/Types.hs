@@ -2,16 +2,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Clippy.Types where
 
+import           Control.Applicative
+import           Control.Monad
 import           Data.Aeson
 import           Data.Text
 import           Data.Time
 import           GHC.Generics
-import           Control.Applicative
-import Control.Monad
 
 data Yank = Yank
-            { content      :: Text
-            , timestamp    :: UTCTime
+            { content     :: Text
+            , timestamp   :: UTCTime
             , contentType :: Text
             } deriving (Show, Eq, Generic)
 
@@ -19,8 +19,7 @@ instance ToJSON Yank
 instance FromJSON Yank
 
 data SearchFilter = SearchFilter
-                    {
-                      amount :: Int
+                    { amount       :: Int
                     , searchString :: Text
                     } deriving (Show, Eq, Generic)
 

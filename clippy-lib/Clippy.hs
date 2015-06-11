@@ -35,10 +35,9 @@ insertYank :: Yank -> IO T.Text
 insertYank y = do
   pipe <- connect (host "127.0.0.1")
   yankId <- access pipe master "yanks" $
-            insert "yanks" [
-              "content" =: content y
-              , "timestamp" =: timestamp y
-              , "contentType" =: contentType y]
+            insert "yanks" [ "content"     =: content y
+                           , "timestamp"   =: timestamp y
+                           , "contentType" =: contentType y ]
   close pipe
   return . T.pack . show $ yankId
 
