@@ -1,8 +1,9 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Clippy.Es.Index where
+module Clippy.ES where
 
+import           Clippy                    (hashYankHex)
 import           Clippy.Types
 import           Control.Applicative
 import           Data.Aeson
@@ -10,12 +11,12 @@ import           Data.Either               (Either (..))
 import           Data.Maybe                (fromJust)
 import           Data.Text                 (Text)
 import           Data.Time.Calendar        (Day (..))
-import           Data.Time.Clock           (UTCTime (..), secondsToDiffTime, getCurrentTime)
+import           Data.Time.Clock           (UTCTime (..), getCurrentTime,
+                                            secondsToDiffTime)
 import           Database.Bloodhound
 import           GHC.Generics              (Generic)
 import           Network.HTTP.Client
 import qualified Network.HTTP.Types.Status as NHTS
-
 
 testServer :: Server
 testServer = Server "http://localhost:9200"
@@ -61,3 +62,6 @@ insertDummy = do
     yankMapping
     (dummyYank time)
     (DocId "1")
+
+insertYank :: Yank -> BH IO Reply
+insertYank y = indexDocument clippyIndex yankMapping y (DocId . hashYankHex $ y)
