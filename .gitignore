@@ -3,3 +3,4 @@
 /dist/
 /test1.db
 /cabal.config
+node_modules
