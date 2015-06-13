@@ -65,3 +65,19 @@ insertDummy = do
 
 insertYank :: Yank -> BH IO Reply
 insertYank y = indexDocument clippyIndex yankMapping y (DocId . hashYankHex $ y)
+
+insertYank' :: Yank -> IO Reply
+insertYank' = withBH' . insertYank
+
+searchYank' :: SearchFilter -> IO [Yank]
+searchYank' (SearchFilter amount q) =
+  fmap (take amount . decodeSearch . responseBody) results
+  where results = withBH' $ searchYank q
+        extractHits = fmap hitSource . hits . searchHits
+        decodeSearch resp = case eitherDecode resp of
+          Right x -> extractHits x
+          Left _ -> []
+
+searchYank :: Text -> BH IO Reply
+searchYank q = searchByIndex clippyIndex $ mkSearch (Just query) Nothing
+  where query =  QueryMatchQuery $ mkMatchQuery (FieldName "content") (QueryString q)

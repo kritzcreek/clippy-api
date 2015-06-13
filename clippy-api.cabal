@@ -18,6 +18,7 @@ cabal-version:       >=1.10
 library
   exposed-modules: Clippy
                  , Clippy.Types
+                 , Clippy.ES
   -- other-modules:
   -- other-extensions:
   build-depends:       aeson

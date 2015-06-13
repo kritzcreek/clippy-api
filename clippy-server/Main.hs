@@ -3,6 +3,7 @@
 module Main where
 
 import           Clippy              (findAllYanks, findYankById, insertNewYank, searchYanks)
+import           Clippy.ES (insertYank', searchYank')
 import           Control.Monad.Trans
 import           Data.Aeson          hiding (json)
 import           Data.List           (find)
@@ -21,6 +22,6 @@ main =
     get "/yanks/:yankId" $
       json =<< liftIO . findYankById =<< param "yankId"
     post "/yanks" $
-      json =<< liftIO . insertNewYank =<< jsonData
+      json . show =<< liftIO . insertYank' =<< jsonData
     post "/yanks/search" $
-      json =<< liftIO . searchYanks =<< jsonData
+      json =<< liftIO . searchYank' =<< jsonData
