@@ -3,20 +3,13 @@
 
 module Clippy.ES where
 
-import           Clippy                    (hashYankHex)
+import           Clippy              (hashYankHex)
 import           Clippy.Types
-import           Control.Applicative
-import           Data.Aeson
-import           Data.Either               (Either (..))
-import           Data.Maybe                (fromJust)
-import           Data.Text                 (Text)
-import           Data.Time.Calendar        (Day (..))
-import           Data.Time.Clock           (UTCTime (..), getCurrentTime,
-                                            secondsToDiffTime)
+import           Data.Aeson          (eitherDecode)
+import           Data.Text           (Text)
+import           Data.Time.Clock     (getCurrentTime)
 import           Database.Bloodhound
-import           GHC.Generics              (Generic)
 import           Network.HTTP.Client
-import qualified Network.HTTP.Types.Status as NHTS
 
 testServer :: Server
 testServer = Server "http://localhost:9200"
