@@ -2,7 +2,10 @@
 
 module Main where
 
-import           Clippy.ES                            (insertYank', searchYank')
+import           Clippy.ES                            (insertSnippet',
+                                                       insertYank',
+                                                       searchSnippet',
+                                                       searchYank')
 import           Control.Monad.Trans                  (liftIO)
 import           Data.Aeson                           hiding (json)
 import           Network.Wai.Middleware.RequestLogger
@@ -13,8 +16,14 @@ main =
   scotty 3000 $ do
     middleware logStdoutDev
     get "/" $
-      json $ object ["yank_url" .= String "/yanks"]
+      json $ object ["yank_url" .= String "/yanks",
+                     "snippet_url" .= String "/snippets"]
     post "/yanks" $
       json . show =<< liftIO . insertYank' =<< jsonData
     post "/yanks/search" $
       json =<< liftIO . searchYank' =<< jsonData
+
+    post "/snippets" $
+      json . show =<< liftIO . insertSnippet' =<< jsonData
+    post "/snippets/search" $
+      json =<< liftIO . searchSnippet' =<< jsonData

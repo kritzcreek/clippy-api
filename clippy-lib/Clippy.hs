@@ -2,7 +2,7 @@
 
 module Clippy
 (
-  hashYank, hashYankHex, toHex
+  hashYank, hashYankHex, toHex, hashSnippetHex
 )where
 
 import           Clippy.Types
@@ -18,7 +18,14 @@ toHex :: BS.ByteString -> String
 toHex bytes = BS.unpack bytes >>= printf "%02x"
 
 hashYank :: Yank -> BS.ByteString
-hashYank = hash . encodeUtf8 . ((<>) <$> content <*> contentType)
+hashYank = hash . encodeUtf8 . ((<>) <$> yankContent <*> yankContentType)
 
 hashYankHex :: Yank -> Text
 hashYankHex = pack . toHex . hashYank
+
+hashSnippet :: Snippet -> BS.ByteString
+hashSnippet = hash . encodeUtf8 . ((<>) <$> snippetContent <*> pack . show . snippetLanguage)
+
+hashSnippetHex :: Snippet -> Text
+hashSnippetHex = pack . toHex . hashSnippet
+

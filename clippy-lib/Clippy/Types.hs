@@ -10,29 +10,67 @@ import           Data.Time
 import           GHC.Generics
 
 data Yank = Yank
-            { content     :: Text
-            , timestamp   :: UTCTime
-            , contentType :: Text
+            { yankContent     :: Text
+            , yankTimestamp   :: UTCTime
+            , yankContentType :: Text
             } deriving (Show, Eq, Generic)
 
 instance ToJSON Yank
 instance FromJSON Yank
 
-data SearchFilter = SearchFilter
-                    { amount       :: Int
-                    , searchString :: Text
+data YankSearchFilter = YankSearchFilter
+                    { yankFilterAmount       :: Int
+                    , yankFiltersearchString :: Text
                     } deriving (Show, Eq, Generic)
 
-instance ToJSON SearchFilter
-instance FromJSON SearchFilter where
-  parseJSON (Object val) = SearchFilter <$>
-                           val .:? "amount" .!= 10 <*>
-                           val .:  "searchString"
+instance ToJSON YankSearchFilter
+instance FromJSON YankSearchFilter where
+  parseJSON (Object val) = YankSearchFilter <$>
+                           val .:? "yankFilterAmount" .!= 10 <*>
+                           val .:  "yankFilterSearchString"
   parseJSON _ = mzero
+
+-- The set of currently supported languages
+
+data Language =
+  Haskell
+  | JavaScript
+  | Java
+  | Scala
+  | Ruby -- Just for you
+  deriving (Eq, Show, Read, Generic)
+
+instance ToJSON Language
+instance FromJSON Language
+
+data Snippet = Snippet
+               {
+                 snippetContent :: Text,
+                 snippetLanguage       :: Language
+               }
+               deriving (Eq, Show, Generic)
+
+instance ToJSON Snippet
+instance FromJSON Snippet
+
+data SnippetSearchFilter = SnippetSearchFilter
+                           { snippetFilterAmount       :: Int,
+                             snippetFilterLanguage     :: Language,
+                             snippetFilterSearchString :: Text
+                           } deriving (Show, Eq, Generic)
+
+instance ToJSON SnippetSearchFilter
+instance FromJSON SnippetSearchFilter where
+  parseJSON (Object val) = SnippetSearchFilter <$>
+                           val .:? "snippetFilterAmount" .!= 10 <*>
+                           val .:  "snippetFilterLanguage" <*>
+                           val .:  "snippetFilterSearchString"
+  parseJSON _ = mzero
+
 
 dummyYank :: UTCTime -> Yank
 dummyYank x = Yank {
-  content = "I'm a dummy Yank."
-  , timestamp = x
-  , contentType = "url"
+  yankContent = "I'm a dummy Yank."
+  , yankTimestamp = x
+  , yankContentType = "url"
   }

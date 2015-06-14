@@ -35,6 +35,18 @@ var setupIndexQuery =
                     "analyzer": "trigrams"
                 }
             }
+        },
+        "snippet": {
+            "properties": {
+                "snippetContent": {
+                    "type": "string",
+                    "analyzer": "trigrams"
+                },
+                "language": {
+                    "type":     "string",
+                    "analyzer": "trigrams"
+                }
+            }
         }
     }
 }
