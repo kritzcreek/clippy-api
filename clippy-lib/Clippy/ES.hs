@@ -49,7 +49,7 @@ searchYank' (YankSearchFilter amount q) =
           Left _ -> []
 
 insertSnippet :: Snippet -> BH IO Reply
-insertSnippet s = indexDocument clippyIndex yankMapping s (DocId . hashSnippetHex $ s)
+insertSnippet s = indexDocument clippyIndex snippetMapping s (DocId . hashSnippetHex $ s)
 
 insertSnippet' :: Snippet -> IO Reply
 insertSnippet' = withBH' . insertSnippet
